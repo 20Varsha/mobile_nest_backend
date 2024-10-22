@@ -1,12 +1,20 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+const authRoutes = require('../route/user');
 const productRoutes = require('../route/product');
 const orderRoutes = require('../route/order');
+const healthCheck = require('../route/health');
 
-router.use('/backend/health-check', health)
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
+// Health check route
+router.use('/backend/health-check', healthCheck);
 
-module.exports=router
+// Authentication routes
+router.use('/auth', authRoutes);
 
+// Product routes
+router.use('/products', productRoutes);
+
+// Order routes
+router.use('/orders', orderRoutes);
+
+module.exports = router;
