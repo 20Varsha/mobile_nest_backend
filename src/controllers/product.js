@@ -6,9 +6,9 @@ exports.addProduct = async (req, res) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: ERROR_MESSAGES.UNAUTHORIZED });
     }
-    const { name, image, specifications } = req.body;
+    const { name, image,price, specifications } = req.body;
     try {
-        const product = await Product.create({ name, image, specifications });
+        const product = await Product.create({ name, image,price, specifications });
         res.status(201).json({ message: SUCCESS_MESSAGES.PRODUCT_ADDED, product });
     } catch (error) {
         res.status(500).json({ message: ERROR_MESSAGES.INTERNAL_SERVER_ERROR, error: error.message });
