@@ -4,8 +4,8 @@ const { SUCCESS_MESSAGES, ERROR_MESSAGES } = require('../utils/constants');
 
 exports.buyProduct = async (req, res) => {
     const { productId, quantity = 1, shippingAddress, paymentMethod, accountDetails } = req.body;
-    const userId = req.user._id;
-    
+    const userId = req.user._id; 
+
     try {
         // Fetch product details
         const product = await Product.findById(productId);
@@ -54,4 +54,34 @@ const calculateShippingCost = (shippingAddress) => {
 const calculateTax = (price) => {
     const taxRate = 0.1; 
     return price * taxRate;
+};
+
+exports.getUserOrders = async (req, res) => {
+    const userId = req.user._id; 
+    try {
+        const orders = await Order.find({ userId }).populate('productId'); // Populate product details if needed
+        return res.status(200).json(orders);
+    } catch (error) {
+        return res.status(500).json({ 
+            message: ERROR_MESSAGES.ORDER_FETCH_FAILED, 
+            error: error.message 
+        });
+    }
+};
+
+exports.getOrderById = async (req, res) => {
+    const { orderId } = req.params; 
+    const userId = req.user._id; 
+    try {
+        const order = await Order.findOne({ _id: orderId, userId }).populate('productId'); 
+        if (!order) {
+            return res.status(404).json({ message: ERROR_MESSAGES.ORDER_NOT_FOUND });
+        }
+        return res.status(200).json(order);
+    } catch (error) {
+        return res.status(500).json({ 
+            message: ERROR_MESSAGES.ORDER_FETCH_FAILED, 
+            error: error.message 
+        });
+    }
 };

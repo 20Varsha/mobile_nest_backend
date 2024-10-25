@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Product = require("../models/product");
 const adminData = require("./admin.json");
 const bcrypt = require("bcryptjs");
 
@@ -13,7 +14,7 @@ const seedData = async () => {
                 })
             );
             await User.insertMany(hashedAdminData);
-        } 
+        }
     } catch (error) {
         console.error("Error seeding data:", error);
     }
