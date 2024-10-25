@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
 const routes = require('./src/route/index'); 
-const seedData = require('./src/seed/admin');
+const seedData = require('./src/seed/seed');
 const cors = require('cors');
 
 dotenv.config();
